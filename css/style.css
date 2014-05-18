@@ -1,0 +1,14 @@
+@font-face {
+    font-family: "PT Sans";
+    src: url(../fonts/PT_Sans-Web-Regular.ttf);
+}
+
+body {
+    margin: 0; padding: 0;
+    font-family: "PT Sans",sans-serif; font-size: 1.5em;
+    min-height: 1200px;
+}
+.container { padding-bottom: 40px;}
+.form-horizontal { }
+.navbar-brand { cursor: default; }
+.navbar-brand:hover, .navbar-brand:focus { color: #999999; }

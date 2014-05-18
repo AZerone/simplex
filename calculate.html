@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <title>Linear Programming</title>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-inverse" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Simplex solver</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="index.html">Main page</a></li>
+                <li class="active"><a href="calculate.html">Calculator</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </nav>
+
+    <hr/>
+    <h3 class="text-center">Inputs</h3>
+    <p>
+        Simply enter your linear programming problem as follows
+        <ol>
+            <li>Select if the problem is maximization or minimization</li>
+            <li>Enter the cost vector in the space provided, ie in boxes labeled with the Ci. Note that you can add dimensions to this vector with the menu "Add Column" or delete the "Delete Column"</li>
+            <li>Enter the matrix of constraints in the columns denoted by Ai. Note that you can resize the problem using the menu "Add Row", "Add Column", "Delete Row" and "Delete Column"</li>
+            <li>Click the sign foreach constraint of the problem,</li>
+            <li>Enter the constraints vector in the column denoted by B. Note that you can resize the problem using the menu "Add Row" and "Delete Row"</li>
+        </ol>
+    </p>
+    <hr/>
+    <h3 class="text-center">Run and Outputs</h3>
+    <p>
+        To begin the calculations click on one of these two actions:
+        <ol>
+            <li>Step by Step Execution: This option will run the Simplex algorithm showing each iteration: A window opens showing how the algorithm pivoting matrix at each step, the solutions and some statistics, such as phase, number of steps of the simplex, the indexes on the base ... Within this option, select</li>
+            <li>for the calculation mode "Fraction Mode" or "numeric mode"</li>
+            <li>Next step: This option will Avanze a new step in the simplex algorithm</li>
+            <li>Back to Menu: Closes the current window and returns to the original with the simplex algorithm.</li>
+            <li>Execute Simplex: This option will run the Simplex algorithm on the problem introduced in the previous steps:a window will be opened in seconds after this click with the final solution found and execution statistics.</li>
+        </ol>
+    </p>
+    <hr/>
+    <h3 class="text-center">Final comments</h3>
+    <p>
+        Simplex Algorithm Calculator comment that is not restricted from us about the extent of the problem and that the precise tolerance in the calculations is 16 decimal digits.
+        At the same time the maximum processing time for a linear programming problem is 20 second, after that time any execution on the simplex algorithm will stop if no solution is found.
+    </p>
+    <hr/>
+    <form id="form" class="form-horizontal" role="form" action="">
+        <div id="step1" class="col-lg-11" style="position: absolute;">
+            <ol class="breadcrumb">
+                <li class="active">Step 1</li>
+            </ol>
+            <div class="form-group">
+                <div class="col-lg-10">
+                    <p id="error" class="text-danger"></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="consLen" class="col-lg-2 control-label">How many constraints?</label>
+                <div class="col-lg-2">
+                    <input type="text" id="consLen" class="form-control" name="consLen" placeholder="Number of constraints"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="varLen" class="col-lg-2 control-label">How many variables?</label>
+                <div class="col-lg-2">
+                    <input type="text" id="varLen" class="form-control" name="varLen" placeholder="Number of variables"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="type" class="col-lg-2 control-label">Do you want to minize result or maximize?</label>
+                <div class="col-lg-10">
+
+                    <div class="radio">
+                        <label>
+                            <input type="radio" id="type" name="type" value="0" checked>
+                            Minimum
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" id="a" name="type" value="1">
+                            Maximum
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-offset-2 col-lg-10">
+                    <a id="next1" class="btn btn-default">Next step</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="step2" class="col-lg-11" style="position: absolute; display: none">
+            <ol class="breadcrumb">
+                <li><a id="back1" href="#">Step 1</a></li>
+                <li class="active">Step 2</li>
+            </ol>
+            <h3>Enter coefficient of Z function</h3>
+            <table id="z-table" class="col-lg-9 table"></table>
+            <h3>Enter coefficients of variables</h3>
+            <table id="table" class="col-lg-12 table">
+            </table>
+            <div class="col-lg-12"">
+                <a id="next2" class="btn btn-primary btn-lg btn-block">Solve</a>
+            </div>
+        </div>
+        <div id="step3" class="colo-lg-11" style="position: absolute; display: none">
+            <ol class="breadcrumb">
+                <li><a id="from3to1" href="">Step 1</a></li>
+                <li><a id="from3to2" href="">Step 2</a></li>
+                <li class="active">Step 3</li>
+            </ol>
+            <h3 id="answer"></h3>
+        </div>
+    </form>
+
+
+</div>
+
+<script src="js/simplex.js"></script>
+<script>
+    $(document).ready(function() {
+        function setError(message) {
+            $("#error").html(message);
+        }
+
+        function setHtml(element, message) {
+            $(element).html(message);
+        }
+
+        function setVisible(element) {
+            $(element).css("display", "block");
+        }
+
+        function setUnvisible(element) {
+            $(element).css("display", "none");
+        }
+
+        function slide(element, start, end, hide) {
+            $(element)
+                    .css("left", start)
+                    .animate({"left": end}, 500,
+                        function() {
+                            if (hide === true)
+                                setUnvisible(element);
+                        });
+        }
+
+        function createTable(n, m) {
+            var s = "";
+            s += "<thead><tr>";
+            for (var i = 0; i < m; i++) {
+                s += "<th>";
+                s += "x" + (i + 1);
+                s += "</th>";
+            }
+            s += "</tr></thead><tbody>";
+            for (var i = 0; i < n; i++) {
+                s += "<tr>";
+                for (var j = 0; j < m; j++) {
+                    s += "<td><input type='text' class='form-control' cols='3' name='x" + i + "" + j + "'/></td>";
+                }
+                s += "<td class='col-lg-1'>" +
+                        "<select class='form-control' name='sign" + i + "'>" +
+                        "<option value='0'><=</option>" +
+                        "<option value='1'>=</option>" +
+                        "<option value='2'>=></option>" +
+                        "</select>" +
+                        "</td>";
+                s += "<td><input type='text' class='form-control' cols='3' name='r" + i + "'/></td>";
+                s += "</tr>";
+            }
+            s += "</tbody>";
+            setHtml("#table", s);
+        }
+
+        function createZTable(n) {
+            var s = "";
+            s += "<thead><tr>";
+            for (var i = 0; i < n; i++) {
+                s += "<th>";
+                s += "x" + (i + 1);
+                s += "</th>";
+            }
+            s += "</tr></thead><tbody><tr>";
+            for (var i = 0; i < n; i++) {
+                s += "<td><input type='text' class='form-control' cols='3' name='z" + i + "'/></td>";
+            }
+            s += "</tr></tbody>";
+            setHtml("#z-table", s);
+        }
+
+        $("#next1").click(function(ev) {
+            ev.preventDefault();
+            var consLen = parseInt($("#consLen").val());
+            var varLen = parseInt($("#varLen").val());
+            if (consLen < 2) {
+                setError("Need more constraints");
+            } else if (consLen > 500) {
+                setError("Too many constraints");
+            } else if (varLen < 2) {
+                setError("Need more variables");
+            } else if (varLen > 10){
+                setError("Too many variables");
+            } else {
+                setError("");
+                simplex.N = consLen;
+                simplex.M = varLen;
+                simplex.type = $("input[name=type]:checked").val();
+                createZTable(varLen);
+                createTable(consLen, varLen);
+                //setUnvisible("#step1");
+                var formPos = $("form").offset().left;
+//                $("#step1")
+//                        .css("left", formPos)
+//                        .animate(
+//                            {"left": formPos - 1200}, 500,
+//                            function() {
+//                                setUnvisible("#step1");
+//                            });
+                //slide("#step1", formPos, formPos - 1200, true);
+                setUnvisible("#step1");
+                slide("#step2", 1200, formPos);
+                setVisible("#step2");
+            }
+        });
+
+        $("#next2").click(function(ev) {
+            ev.preventDefault();
+
+            //read z function
+            for (var i = 0; i < simplex.M; i++) {
+                var t = parseInt($("input[name=z" + i+"]").val());
+                if (isNaN(t) || t === undefined) t = 0;
+                simplex.z[i] = t;
+            }
+
+            // read right side
+            for (var i = 0; i < simplex.N; i++) {
+                simplex.a[i] = {};
+                var t = parseInt($("input[name=r" + i + "]").val());
+                if (isNaN(t)) t = 0;
+                //simplex.c[i] = t;
+                simplex.a[i][simplex.M + simplex.N] = t;
+            }
+
+            // reading a
+            for (var i = 0 ; i < simplex.N; i++) {
+                for (var j = 0; j < simplex.M; j++) {
+                    var coeff = parseInt($("input[name=x" + i + "" + j +"]").val())
+                    if (isNaN(coeff)|| coeff === undefined) coeff = 0;
+                    simplex.a[i][j] =  coeff;
+                }
+            }
+            // read sign part
+            for (var i = 0; i < simplex.N; i++) {
+                var sign = parseInt($("select[name=sign" + i+"]").val());
+                simplex.sign[i] = sign;
+            }
+
+            simplex.create();
+
+            console.log(simplex.a);
+            simplex.solve();
+            var formPos = $("form").offset().left;
+            setHtml("#answer", simplex.answer());
+            alert(simplex.answer());
+            console.log("answer", simplex.answer());
+            setUnvisible("#step2");
+            setUnvisible("#step1");
+            setVisible("#step3");
+            slide("#step3", 1200, formPos);
+        });
+
+        $("#back1").click(function(ev) {
+            ev.preventDefault();
+            var formPos = $("form").offset().left;
+            //slide("#step2", formPos, 1200, true);
+            setUnvisible("#step2");
+            setVisible("#step1");
+            slide("#step1", -1200, formPos);
+        });
+        $("#from3to1").click(function(ev) {
+            var formPos = $("form").offset().left;
+            //slide("#step2", formPos, 1200, true);
+            setUnvisible("#step3");
+            setUnvisible("#step2");
+            setVisible("#step1");
+            slide("#step1", -1200, formPos);
+            ev.preventDefault();
+            return false;
+        });
+        $("#from3to2").click(function(ev) {
+            var formPos = $("form").offset().left;
+            //slide("#step2", formPos, 1200, true);
+            setUnvisible("#step3");
+            setUnvisible("#step1");
+            setVisible("#step2");
+            slide("#step2", -1200, formPos);
+            ev.preventDefault();
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
